@@ -16,7 +16,7 @@ tk.Label(root, image=imagem).pack(pady=10)
 
 # Restante da interface
 tk.Label(root, text="Usuário:", font=("Arial", 12)).pack(pady=5)
-entrada_usuario = tk.Entry(root)
+entrada_usuario = tk.Entry(root, width=40)
 entrada_usuario.pack(pady=5)
 
 tk.Label(root, text="Senha:", font=("Arial", 12)).pack(pady=5)
