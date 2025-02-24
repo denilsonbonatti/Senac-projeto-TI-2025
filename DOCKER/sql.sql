@@ -9,3 +9,5 @@ CREATE TABLE adm_users (
     data_criacao DATE NOT NULL DEFAULT (CURRENT_DATE),
     ultimo_login DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP 
 );
+
+INSERT INTO adm_users (nome,cargo,email,senha) VALUES ('Denilson', 'Administrador', 'email@email.com','Senha123');

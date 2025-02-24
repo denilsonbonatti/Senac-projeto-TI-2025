@@ -8,3 +8,6 @@
 * MySQL 9.2.0
 * Python 3.10 ou superior
 ** Bibliotecas tkinter, flask, mysql-connection-python
+
+* sudo docker build -t usuario/mysql:1.0 .
+* sudo docker run -d -p 3306:3306 --name mysql usuario/mysql:1.0
