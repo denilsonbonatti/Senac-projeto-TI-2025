@@ -11,3 +11,4 @@ db_config = {
 #Criando conexão com o banco de dados
 conexao = Conexao(db_config)
 conexao.conectar()
+conexao.verificar_usuario('email@email.com', 'Senha123')
