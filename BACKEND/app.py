@@ -1,14 +1,26 @@
+from flask import Flask, request, jsonify
 from conexao import Conexao
 
-#Configurações do Banco de Dados
+app = Flask(__name__)
 
+# Configurações do Banco de Dados
 db_config = {
-    "host": "192.168.113.30",
+    "host": "192.168.125.147",
     "user": "App",
     "password": "Senha123",
     "database": "EMPRESA"
 }
-#Criando conexão com o banco de dados
-conexao = Conexao(db_config)
-conexao.conectar()
-conexao.verificar_usuario('email@email.com', 'Senha123')
+
+@app.route('/get/login/', methods=['POST'])
+def verificar_usuario():
+    dados = request.get_json()
+    usuario = dados.get('usuario')
+    senha = dados.get('senha')
+
+    conexao = Conexao(db_config)
+    usuario_existe = conexao.verificar_usuario(usuario, senha)
+    print (jsonify({"usuario_existe": usuario_existe}), 200 if usuario_existe else 401)
+    return jsonify({"usuario_existe": usuario_existe}), 200 if usuario_existe else 401
+    
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
