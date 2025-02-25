@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import jsonify
+
 
 class Conexao:
     def __init__(self, config):
@@ -13,7 +13,7 @@ class Conexao:
                 self.conexao = mysql.connector.connect(**self.config)
                 self.cursor = self.conexao.cursor(dictionary=True)
         except mysql.connector.Error as err:
-            print(f"Erro ao conectar ao banco de dados: {err}")   
+            return(f"Erro ao conectar ao banco de dados: {err}")   
     
     def desconectar(self):
         if self.cursor:
@@ -23,10 +23,11 @@ class Conexao:
     
     def consultar(self, query, params=None):
         self.conectar()
-        self.cursor.execute(query, params)
-        resultado = self.cursor.fetchone()
-        self.desconectar()
-        return resultado
+        if self.conexao is not None:
+            self.cursor.execute(query, params)
+            resultado = self.cursor.fetchone()
+            self.desconectar()
+            return resultado
         
     def verificar_usuario(self, email, senha):
         query = "SELECT * FROM adm_users WHERE email = %s AND senha = %s"

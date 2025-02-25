@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-import requests 
+import requests
 
 root = tk.Tk()
 root.title("Área de Login")
@@ -11,18 +11,34 @@ def verifica_usuario():
     usuario = entrada_usuario.get()
     senha = entrada_senha.get()
     
-    url_api = "http://10.105.44.35:5000/get/login/"  # Corrigida a URL
-    response = requests.post(url_api, json={"usuario": usuario, "senha": senha})
+    url_api = "http://192.168.0.109:5000/get/login/"
     
-    if response.status_code == 200:
-        data = response.json()
-        if data.get("usuario_existe"):
-            abrir_menu_crud()
-    else:
-        messagebox.showerror("Login Inválido", "Usuário ou senha inválidos.")
+    try:
+        response = requests.post(url_api, json={"usuario": usuario, "senha": senha})
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("usuario_existe"):
+                abrir_menu_crud()
+            else:
+                messagebox.showwarning("Usuário Não Encontrado", "Usuário ou senha inválidos.")
+        
+        elif response.status_code == 401:
+            messagebox.showwarning("Login Inválido", "Usuário ou senha inválidos.")
+        
+        elif response.status_code == 500:
+            messagebox.showerror("Erro de Conexão", "Falha ao conectar ao banco de dados. Tente novamente mais tarde.")
+        
+        else:
+            messagebox.showerror("Erro Desconhecido", f"Erro inesperado: {response.status_code}")
+
+    except requests.exceptions.ConnectionError:
+        messagebox.showerror("Erro de Rede", "Não foi possível conectar ao servidor.")
+    except requests.exceptions.RequestException as e:
+        messagebox.showerror("Erro de Requisição", f"Erro ao comunicar com o servidor: {e}")
 
 def abrir_menu_crud():
-    print("Aqui será o menu do CRUD!!!")
+    messagebox.showinfo("Acesso Concedido", "Bem-vindo ao sistema!")
 
 tk.Label(root, text="Área administrativa", font=("Arial Black", 14, "bold")).pack(pady=5)
 
