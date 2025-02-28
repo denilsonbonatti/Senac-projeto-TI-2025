@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import requests
 
+import menu
+
 root = tk.Tk()
 root.title("Área de Login")
 root.geometry("500x400")
@@ -11,7 +13,7 @@ def verifica_usuario():
     usuario = entrada_usuario.get()
     senha = entrada_senha.get()
     
-    url_api = "http://192.168.0.109:5000/get/login/"
+    url_api = "http://10.105.44.35:5000/get/login/"
     
     try:
         response = requests.post(url_api, json={"usuario": usuario, "senha": senha})
@@ -39,6 +41,8 @@ def verifica_usuario():
 
 def abrir_menu_crud():
     messagebox.showinfo("Acesso Concedido", "Bem-vindo ao sistema!")
+    root.destroy()
+    menu.abrir_tela_menu()
 
 tk.Label(root, text="Área administrativa", font=("Arial Black", 14, "bold")).pack(pady=5)
 

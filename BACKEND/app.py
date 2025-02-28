@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Configurações do Banco de Dados
 db_config = {
-    "host": "172.24.246.169",
+    "host": "192.168.125.147",
     "user": "App",
     "password": "Senha123",
     "database": "EMPRESA"
@@ -21,6 +21,23 @@ def verificar_usuario():
         conexao = Conexao(db_config)
         usuario_existe = conexao.verificar_usuario(usuario, senha)
         return jsonify({"usuario_existe": usuario_existe}), 200 if usuario_existe else 401
+
+    except Exception as e:
+        return jsonify({"erro": f"Falha ao conectar ao banco: {str(e)}"}), 500
+    
+
+@app.route('/post/incluir/usuario/', methods=['POST'])
+def incluir_usuario():
+    dados = request.get_json()
+    nome = dados.get('nome')
+    cargo = dados.get('cargo')
+    email = dados.get('email')
+    senha = dados.get('senha')
+    
+    try:
+        conexao = Conexao(db_config)
+        inclusao = conexao.incluir_usuario(nome, cargo, email, senha)
+        return jsonify({"inclusao": inclusao}), 200 if inclusao else 400
 
     except Exception as e:
         return jsonify({"erro": f"Falha ao conectar ao banco: {str(e)}"}), 500
